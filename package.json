@@ -1,0 +1,22 @@
+{
+  "name": "route-pattern",
+  "version": "0.0.0",
+  "description": "Generic Sinatra/Backbone style route pattern matching",
+  "main": "route-pattern.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bjoerge/route-pattern.git"
+  },
+  "keywords": [
+    "route",
+    "pattern"
+  ],
+  "author": "Bjørge Næss",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.8.2"
+  }
+}
