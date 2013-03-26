@@ -1,6 +1,6 @@
 {
   "name": "route-pattern",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generic Sinatra/Backbone style route pattern matching",
   "main": "route-pattern.js",
   "scripts": {
@@ -27,13 +27,34 @@
     ],
     "harness": "mocha",
     "browsers": {
-      "ie": [ "8", "9", "10" ],
-      "ff": [ "18", "19" ],
-      "chrome": [ "25", "canary" ],
-      "opera": [ "11.6", "12", "next" ],
-      "iphone": [ "6.0" ],
-      "ipad": [ "6.0" ],
-      "safari": [ "5.1", "6.0" ]
+      "ie": [
+        "8",
+        "9",
+        "10"
+      ],
+      "ff": [
+        "18",
+        "19"
+      ],
+      "chrome": [
+        "25",
+        "canary"
+      ],
+      "opera": [
+        "11.6",
+        "12",
+        "next"
+      ],
+      "iphone": [
+        "6.0"
+      ],
+      "ipad": [
+        "6.0"
+      ],
+      "safari": [
+        "5.1",
+        "6.0"
+      ]
     }
   }
 }
