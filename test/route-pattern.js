@@ -133,9 +133,9 @@ describe("RoutePattern", function () {
       it("should decode query parameters properly", function () {
         var pattern = RoutePattern.fromString("/hello/?name=:sayHelloTo&*");
         var match = pattern.match("/hello/?name=bj%C3%B8rn");
-        assert.deepEqual(match.params, ['bjørn']);
-        assert.deepEqual(match.namedQueryParams, { sayHelloTo: 'bjørn' });
-        assert.deepEqual(match.queryParams, { name: 'bjørn' });
+        assert.deepEqual(match.params, [encodeURIComponent('bj%C3%B8rn')]);
+        assert.deepEqual(match.namedQueryParams, { sayHelloTo: encodeURIComponent('bj%C3%B8rn') });
+        assert.deepEqual(match.queryParams, { name: encodeURIComponent('bj%C3%B8rn') });
       });
     });
   });
