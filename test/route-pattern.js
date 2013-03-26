@@ -3,10 +3,10 @@ var assert = require("assert");
 var RoutePattern = require("../route-pattern").RoutePattern;
 
 if (typeof Object.getOwnPropertyNames == "undefined") {
-  require("es5-shim");
+  require("es5-shim/es5-sham");
 }
 if (typeof Array.prototype.forEach == "undefined") {
-  require("es5-shim/es5-sham");
+  require("es5-shim");
 }
 
 describe("RoutePattern", function () {

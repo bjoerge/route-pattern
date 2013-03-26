@@ -24,8 +24,7 @@
   },
   "testling": {
     "files": [
-      "test/compat.js",
-      "test/route-pattern.js"
+      "test/*.js"
     ],
     "harness": "mocha",
     "browsers": {
