@@ -119,9 +119,12 @@ pattern.match("/some/root/path/planets/earth/facts/about/this/planet")
 2. From your .js file: `var RoutePattern = require("route-pattern");` 
 
 ## Browser
+
+This module works in all major browsers, including IE 8-10
+
 Download latest version:
-* Development
-* Production (minified)
+* [Development](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-0.0.1.js)
+* [Production](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-0.0.1.min.js) (minified)
 
 When included with a &lt;script&gt; tag, it it will expose the `RoutePattern` class as a global variable.
 
