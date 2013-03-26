@@ -10,7 +10,6 @@ route-pattern
 * Define patterns for matching *only* against the parts of the location you are interested in
 * Match against a location and capture named parameters, query string, etc.
 * Well tested.
-* Create a pattern for matching against the query string part of an url
 
 ### Example: matching a route against a path 
 
