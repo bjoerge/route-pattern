@@ -97,7 +97,7 @@ pattern.match("/some/root/path/planets/earth/facts/about/this/planet") // true
 after the `*` 
 
 ```js
-var pattern = RoutePattern.fromString("*/planets/:planet/*")
+var pattern = RoutePattern.fromString("*before/planets/:planet/*after")
 pattern.match("/some/root/path/planets/earth/facts/about/this/planet")
 // Returns:
 {
