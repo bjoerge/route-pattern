@@ -1,6 +1,6 @@
 var assert = require("assert");
 
-var RoutePattern = require("../route-pattern");
+var RoutePattern = require("../route-pattern").RoutePattern;
 
 describe("RoutePattern", function () {
 
@@ -133,9 +133,9 @@ describe("RoutePattern", function () {
       it("should decode query parameters properly", function () {
         var pattern = RoutePattern.fromString("/hello/?name=:sayHelloTo&*");
         var match = pattern.match("/hello/?name=bj%C3%B8rn");
-        assert.deepEqual(match.params, [encodeURIComponent('bj%C3%B8rn')]);
-        assert.deepEqual(match.namedQueryParams, { sayHelloTo: encodeURIComponent('bj%C3%B8rn') });
-        assert.deepEqual(match.queryParams, { name: encodeURIComponent('bj%C3%B8rn') });
+        assert.deepEqual(match.params, [decodeURIComponent('bj%C3%B8rn')]);
+        assert.deepEqual(match.namedQueryParams, { sayHelloTo: decodeURIComponent('bj%C3%B8rn') });
+        assert.deepEqual(match.queryParams, { name: decodeURIComponent('bj%C3%B8rn') });
       });
     });
   });
