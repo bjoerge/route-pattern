@@ -66,7 +66,7 @@ var pattern = RoutePattern.fromString("/hello/:planet?foo=:foo&fruit=:fruit#:sec
 pattern.match("/hello/earth?foo=bar&fruit=apple#chapter2");
 // Returns:
 {
-  params: ["bar", "apple", ],
+  params: ["bar", "apple"],
   namedParams: { planet: "earth", foo: "bar", fruit: "apple" }
   pathParams: { planet: "world" }
   queryParams: { foo: "bar", fruit: "apple" }
