@@ -18,5 +18,18 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.8.2"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "harness" : "mocha",
+    "browsers": {
+      "ie": [ 6, 7, 8, 9, 10],
+      "ff": [ 18, 19 ],
+      "chrome": [ 25, "canary" ],
+      "opera": [ 11.6, 12, "next" ],
+      "iphone": [ 6.0 ],
+      "ipad": [ 6.0 ],
+      "safari": [ 5.1, 6.0, "nightly" ]
+    }
   }
 }
