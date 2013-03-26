@@ -131,11 +131,11 @@ describe("RoutePattern", function () {
         });
       });
       it("should decode query parameters properly", function () {
-        var pattern = RoutePattern.fromString("/hello/?name=:sayHelloTo&*");
-        var match = pattern.match("/hello/?name=bj%C3%B8rn");
-        assert.deepEqual(match.params, [decodeURIComponent('bj%C3%B8rn')]);
-        assert.deepEqual(match.namedQueryParams, { sayHelloTo: decodeURIComponent('bj%C3%B8rn') });
-        assert.deepEqual(match.queryParams, { name: decodeURIComponent('bj%C3%B8rn') });
+        var pattern = RoutePattern.fromString("/hello/?url=:site&*");
+        var match = pattern.match("/hello/?url=http%3A%2F%2Ffoo.bar");
+        assert.deepEqual(match.params, ["http://foo.bar"]);
+        assert.deepEqual(match.namedQueryParams, { site: decodeURIComponent("http://foo.bar") });
+        assert.deepEqual(match.queryParams, { url: decodeURIComponent("http://foo.bar") });
       });
     });
   });
