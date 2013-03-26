@@ -19,11 +19,13 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "~1.8.2",
-    "browserify": "~2.8.0"
+    "browserify": "~2.8.0",
+    "es5-shim": "~2.0.8"
   },
   "testling": {
     "files": [
       "es5-shim",
+      "es5-shim/es5-sham",
       "test/*.js"
     ],
     "harness": "mocha",
@@ -59,8 +61,5 @@
         "6.0"
       ]
     }
-  },
-  "dependencies": {
-    "es5-shim": "~2.0.8"
   }
 }
