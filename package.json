@@ -24,8 +24,8 @@
   },
   "testling": {
     "files": [
-      "es5-shim",
-      "es5-shim/es5-sham",
+      "node_modules/es5-shim/es5-shim.js",
+      "node_modules/es5-shim/es5-sham.js",
       "test/*.js"
     ],
     "harness": "mocha",
