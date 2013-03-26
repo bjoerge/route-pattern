@@ -363,9 +363,10 @@ var RoutePattern = (function () {
   return RoutePattern;
 }());
 
-module.exports = {
-  QueryStringPattern: QueryStringPattern,
-  PathPattern: PathPattern,
-  RegexPattern: RegexPattern,
-  RoutePattern: RoutePattern
-};
+// CommonJS export
+module.exports = RoutePattern;
+
+// Also export the individual pattern classes
+RoutePattern.QueryStringPattern = QueryStringPattern;
+RoutePattern.PathPattern = PathPattern;
+RoutePattern.RegexPattern = RegexPattern;

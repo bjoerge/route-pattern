@@ -1,6 +1,6 @@
 var assert = require("assert");
 
-var RoutePattern = require("../route-pattern").RoutePattern;
+var RoutePattern = require("../route-pattern");
 
 if (typeof Array.prototype.forEach == "undefined") {
   require("es5-shim");
