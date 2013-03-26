@@ -1,13 +1,19 @@
-var merge = function() {
-  return [].slice.call(arguments).reduce(function(merged, source) {
+// # Utility functions
+//
+// ## Shallow merge two or more objects, e.g.
+// merge({a: 1, b: 2}, {a: 2}, {a: 3}) => {a: 3, b: 2}
+function merge() {
+  return [].slice.call(arguments).reduce(function (merged, source) {
     for (var prop in source) {
       merged[prop] = source[prop];
     }
     return merged;
   }, {});
-};
+}
 
-var decodeQueryString = function(queryString) {
+// ## Convert a query string to a object, e.g.:
+// decodeQueryString("foo=bar") => { foo: "bar" }
+function decodeQueryString(queryString) {
   return queryString.split("&").reduce(function (params, pair) {
     var parts = pair.split("="),
       key = decodeURIComponent(parts[0]),
@@ -15,9 +21,13 @@ var decodeQueryString = function(queryString) {
     params[key] = value;
     return params;
   }, {});
-};
+}
 
-var parseLocation = function(location) {
+// Split a location string into different parts, e.g.:
+// splitLocation("/foo/bar?fruit=apple#some-hash") => {
+//  path: "/foo/bar", queryString: "fruit=apple", hash: "some-hash" 
+// }
+function splitLocation(location) {
   var re = /([^\?#]*)?(\?[^#]*)?(#.*)?$/;
   var match = re.exec(location);
   return {
@@ -25,8 +35,11 @@ var parseLocation = function(location) {
     queryString: match[2] && match[2].substring(1) || '',
     hash: match[3] && match[3].substring(1) || ''
   }
-};
+}
 
+// # QueryStringPattern
+// The QueryStringPattern holds a compiled version of the query string part of a route string, i.e.
+// ?foo=:foo&fruit=:fruit
 var QueryStringPattern = (function () {
 
   // The RoutePattern constructor
@@ -95,6 +108,7 @@ var QueryStringPattern = (function () {
     });
     return data;
   };
+
   QueryStringPattern.fromString = function (routeString) {
 
     var options = {
@@ -141,13 +155,13 @@ var QueryStringPattern = (function () {
   return QueryStringPattern;
 })();
 
-
-// # RoutePattern
-// The RoutePattern holds a compiled version of a route string
+// # PathPattern
+// The PathPattern holds a compiled version of the path part of a route string, i.e.
+// /some/:dir
 var PathPattern = (function () {
 
   // These are the regexps used to construct a regular expression from a route pattern string
-  // Almost entirely taken from Backbone.js
+  // Based on route patterns in Backbone.js
   var
     pathParam = /:\w+/g,
     splatParam = /\*\w+/g,
@@ -192,7 +206,7 @@ var PathPattern = (function () {
     return data;
   };
 
-  PathPattern.routePathToRegexp = function(path) {
+  PathPattern.routePathToRegexp = function (path) {
     path = path
       .replace(escapeRegExp, "\\$&")
       .replace(pathParam, "([^/]+)")
@@ -225,9 +239,46 @@ var PathPattern = (function () {
   return PathPattern;
 }());
 
+// # RegexPattern
+// The RegexPattern is just a simple wrapper around a regex, used to provide a similar api as the other route patterns
+var RegexPattern = (function () {
+  // The RegexPattern constructor
+  // Wraps a regexp and provides a *Pattern api for it
+  function RegexPattern(regex) {
+    this.regex = regex;
+  }
+
+  RegexPattern.prototype.matches = function (loc) {
+    return this.regex.test(loc);
+  };
+
+  // Extracts all matched parameters
+  RegexPattern.prototype.match = function (loc) {
+    var queryString = loc.search || loc.split("?")[0] || '';
+    var queryParams = decodeQueryString(queryString);
+    return {
+      params: this.regex.exec(loc).slice(1),
+      namedParams: {},
+      queryParams: queryParams
+    };
+  };
+
+  return RegexPattern;
+}());
+
 // # RoutePattern
-// The RoutePattern holds a compiled version of a route string
-var RoutePattern = module.exports = (function () {
+// The RoutePattern combines the PathPattern and the QueryStringPattern so it can represent a full location
+// (excluding the scheme + domain part)
+// It also allows for having path-like routes in the hash part of the location
+// Allows for route strings like:
+// /some/:page?param=:param&foo=:foo#:bookmark
+// /some/:page?param=:param&foo=:foo#/:section/:bookmark
+// 
+// Todo: maybe allow for parameterization of the kind of route pattern to use for the hash?
+// Maybe use the QueryStringPattern for cases like
+// /some/:page?param=:param&foo=:foo#?onlyCareAbout=:thisPartOfTheHash&*
+// Need to test how browsers handles urls like that
+var RoutePattern = (function () {
 
   // The RoutePattern constructor
   // Takes a route string or regexp as parameter and provides a set of utility functions for matching against a 
@@ -244,7 +295,7 @@ var RoutePattern = module.exports = (function () {
 
   RoutePattern.prototype.matches = function (location) {
     // Whatever comes after ? and # is ignored
-    var loc = parseLocation(location);
+    var loc = splitLocation(location);
 
     return (!this.pathPattern || this.pathPattern.matches(loc.path)) &&
       (!this.queryStringPattern || this.queryStringPattern.matches(loc.queryString) ) &&
@@ -255,7 +306,7 @@ var RoutePattern = module.exports = (function () {
   RoutePattern.prototype.match = function (location) {
 
     // Whatever comes after ? and # is ignored
-    var loc = parseLocation(location),
+    var loc = splitLocation(location),
       match,
       pattern;
 
@@ -268,7 +319,7 @@ var RoutePattern = module.exports = (function () {
       hashParams: {}
     };
 
-    var addMatch = function(match) {
+    var addMatch = function (match) {
       data.params = data.params.concat(match.params);
       data.namedParams = merge(data.namedParams, match.namedParams);
     };
@@ -294,11 +345,11 @@ var RoutePattern = module.exports = (function () {
 
   // This compiles a route string into a set of options which a new RoutePattern is created with 
   RoutePattern.fromString = function (routeString) {
-    var parts = parseLocation(routeString);
+    var parts = splitLocation(routeString);
 
     var matchPath = parts.path;
     var matchQueryString = parts.queryString || routeString.indexOf("?") > -1;
-    var matchHash =  parts.hash || routeString.indexOf("#") > -1;
+    var matchHash = parts.hash || routeString.indexOf("#") > -1;
 
     // Options object are created, now instantiate the RoutePattern
     return new RoutePattern({
@@ -312,30 +363,9 @@ var RoutePattern = module.exports = (function () {
   return RoutePattern;
 }());
 
-// # RegexPattern
-// The RegexPattern matches against a regex
-var RegexPattern = (function () {
-
-  // The RegexPattern constructor
-  // Wraps a regexp and provides a *Pattern api for it
-  function RegexPattern(regex) {
-    this.regex = regex;
-  }
-
-  RegexPattern.prototype.matches = function (loc) {
-    return this.regex.test(loc);
-  };
-
-  // Extracts all matched parameters
-  RegexPattern.prototype.match = function (loc) {
-    var queryString = loc.search || loc.split("?")[0] || '';
-    var queryParams = decodeQueryString(queryString);
-    return {
-      params: this.regex.exec(loc).slice(1),
-      namedParams: {},
-      queryParams: queryParams
-    };
-  };
-
-  return RegexPattern;
-}());
+module.exports = {
+  QueryStringPattern: QueryStringPattern,
+  PathPattern: PathPattern,
+  RegexPattern: RegexPattern,
+  RoutePattern: RoutePattern
+};
