@@ -4,8 +4,7 @@
   "description": "Generic Sinatra/Backbone style route pattern matching",
   "main": "route-pattern.js",
   "scripts": {
-    "test": "mocha",
-    "test-browser": "node_modules/.bin/browserify -r ./test/pather.js > test-browser/build/tests.js && node test-server.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
