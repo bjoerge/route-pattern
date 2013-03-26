@@ -131,20 +131,10 @@ When included with a &lt;script&gt; tag, it it will expose the `RoutePattern` cl
 # API
 
 ### `RoutePattern.fromString(routeString)`
-Returns a RoutePattern instance.
+Compiles a route string and returns a RoutePattern instance.
 
 ### `new RoutePattern(opts)`
-Constructor. Usually its better to use `RoutePattern.fromString(routeString)` instead of using this constructor directly.
-
-Available options are:
-
-* `pathPattern`: a `RoutePattern.PathPattern`-instance
-* `queryStringPattern`: A `RoutePattern.QueryStringPattern`-instance,
-* `hashPattern`: A `RoutePattern.HashStringPattern`-instance,
-* `queryStringPattern`: A `RoutePattern.QueryStringPattern`-instance,
-* `routeString`: A reference to the original routestring (optional)
-
-All options are optional, but to make sense, at least one of `pathPattern`, `queryStringPattern`, `hashPattern` or `hashPattern` should be given.
+Constructor. Usually its better to use `RoutePattern.fromString(routeString)` instead of using the constructor directly.
 
 ### routePattern.match(locationString)
 Matches a location string against the pattern and returns captured values (i.e.
