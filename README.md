@@ -160,3 +160,8 @@ RoutePattern.fromString("/foo/:bar").matches("/foo/bar") // true
 # Future work:
 * Allow pattern matching against the full url (i.e. scheme, domain, port in addition to the currently supported parts of
 the url)
+
+
+## License
+
+MIT
