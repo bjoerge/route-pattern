@@ -1,14 +1,20 @@
 # route-pattern
 
-#### Generic Express/Sinatra/Backbone-style route pattern matching
+#### Generic route pattern matching
 
 # Features
+
+The most important feature of this library is that it does pattern matching and nothing, *nothing* more.
+
+Other features are:
 
 * Environment, framework and tool agnostic. Works in both Node.js and the browser. No jQuery, Express etc. needed.
 * Match against the *path*, *search* (query string) and the *hash* part of a location
 * Define patterns for matching *only* against the parts of the location you are interested in
 * Match against a location and capture named parameters, query string, etc.
 * Well tested.
+
+In other words, you *could* use this library to support routing in your app or framework.
 
 ### Example: matching a route against a path 
 
