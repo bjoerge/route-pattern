@@ -1,5 +1,4 @@
-route-pattern
-=
+# route-pattern
 
 #### Generic Express/Sinatra/Backbone-style route pattern matching
 
@@ -78,7 +77,7 @@ Note: `namedParams` is a merge of `pathParams`, `queryParams` and `hashParams`.
 
 ### Capturing wildcards and splats
 
-#### Wildcards will ignore whatever is in the place of the `*`
+Wildcards in the route string will ignore whatever is in the place of the `*`
 
 ```js
 var pattern = RoutePattern.fromString("*/planets/:planet/*")
@@ -93,8 +92,7 @@ pattern.match("/some/root/path/planets/earth/facts/about/this/planet") // true
 }
 ```
 
-#### Splat parameters is like wildcards, only that they will capture the value of the identifier that comes
-after the `*` 
+Splat parameters is like wildcards, only that they will capture the value of the identifier that comes after the `*` 
 
 ```js
 var pattern = RoutePattern.fromString("*before/planets/:planet/*after")
@@ -119,7 +117,8 @@ pattern.match("/some/root/path/planets/earth/facts/about/this/planet")
 
 ## Browser
 
-This module works in all major browsers, including IE 8-10
+This module works in all major browsers, including IE 8-10. However, it makes use of ECMAScript 5 features, so in 
+order to make it work on legacy browsers, you need to include a ECMAScript 5 shim, like the [es5-shim](https://github.com/kriskowal/es5-shim). 
 
 Download latest version:
 * [Development](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-0.0.1.js)
