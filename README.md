@@ -153,11 +153,15 @@ RoutePattern.fromString("/foo/:bar").matches("/foo/bar/baz") // false
 RoutePattern.fromString("/foo/:bar").matches("/foo/bar") // true
 ```
 
-
 # Future work:
 * Allow pattern matching against the full url (i.e. scheme, domain, port in addition to the currently supported parts of
-the url)
+the url). Useful where same script resides on multiple domains.
 
+# Changelog
+
+## 0.0.3
+  * Rename `RegexPattern` => `RegExpPattern`.
+  * Make all the Pattern classes' `match()` methods  return null if there are no match.
 
 ## License
 

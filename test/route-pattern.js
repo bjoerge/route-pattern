@@ -1,6 +1,7 @@
 var assert = require("assert");
 
 var RoutePattern = require("../route-pattern");
+var RegExpPattern = RoutePattern.RegExpPattern;
 
 if (typeof Array.prototype.forEach == "undefined") {
   require("es5-shim");
@@ -89,7 +90,29 @@ describe("RoutePattern", function () {
     });
   });
 
+  describe("regex matching", function () {
+    it("should match like a regex", function () {
+      var pattern = new RegExpPattern(/\/a\/(b|c)\/e/);
+      assert(pattern.matches("/a/b/e"));
+      assert(pattern.matches("/a/c/e"));
+      assert(pattern.matches("/a/b/e/f"));
+      assert(!pattern.matches("/a/d/e"));
+    });
+    it("should extract the different parts of the path as the other patterns", function () {
+      var pattern = new RegExpPattern(/\/a\/(b|c)\/e/);
+      assert.deepEqual({foo: "bar"}, pattern.match("/a/b/e?foo=bar").queryParams);
+      assert.deepEqual(['c'], pattern.match("/a/c/e").params);
+      assert.equal(null, pattern.match("/a/d/e"));
+    });
+  });
+
   describe("extracting captured data", function () {
+    describe("captured parameter values", function () {
+      it("should return null if no match at all", function () {
+        var pattern = RoutePattern.fromString("/*root/:foo/?param=:param#:hash");
+        assert.equal(null, pattern.match("/whatever"));
+      });
+    });
     describe("captured parameter values", function () {
       it("should return an array of all captured parameter values", function () {
         var pattern = RoutePattern.fromString("/*root/:foo/?param=:param#:hash");
@@ -127,13 +150,13 @@ describe("RoutePattern", function () {
       });
       it("should provide a separate object with the named parameters from the query string", function () {
         var pattern = RoutePattern.fromString("/:one/?foo=:one&*");
-        assert.deepEqual(pattern.match("/1/2/3/?foo=4").namedQueryParams, {
+        assert.deepEqual(pattern.match("/something/?foo=4").namedQueryParams, {
           one: "4"
         });
       });
       it("should provide a separate object with the query parameters", function () {
         var pattern = RoutePattern.fromString("/:one/?foo=:one&*");
-        assert.deepEqual(pattern.match("/1/2/3/?foo=4").queryParams, {
+        assert.deepEqual(pattern.match("/something/?foo=4").queryParams, {
           foo: "4"
         });
       });
