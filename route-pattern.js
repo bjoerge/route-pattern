@@ -78,6 +78,9 @@ var QueryStringPattern = (function () {
   };
 
   QueryStringPattern.prototype.match = function (queryString) {
+
+    if (!this.matches(queryString)) return null;
+
     var data = {
       params: [],
       namedParams: {},
@@ -190,6 +193,8 @@ var PathPattern = (function () {
   // Extracts all matched parameters
   PathPattern.prototype.match = function (pathname) {
 
+    if (!this.matches(pathname)) return null;
+    
     // The captured data from pathname
     var data = {
       params: [],
@@ -239,31 +244,35 @@ var PathPattern = (function () {
   return PathPattern;
 }());
 
-// # RegexPattern
-// The RegexPattern is just a simple wrapper around a regex, used to provide a similar api as the other route patterns
-var RegexPattern = (function () {
-  // The RegexPattern constructor
+// # RegExpPattern
+// The RegExpPattern is just a simple wrapper around a regex, used to provide a similar api as the other route patterns
+var RegExpPattern = (function () {
+  // The RegExpPattern constructor
   // Wraps a regexp and provides a *Pattern api for it
-  function RegexPattern(regex) {
+  function RegExpPattern(regex) {
     this.regex = regex;
   }
 
-  RegexPattern.prototype.matches = function (loc) {
+  RegExpPattern.prototype.matches = function (loc) {
     return this.regex.test(loc);
   };
 
   // Extracts all matched parameters
-  RegexPattern.prototype.match = function (loc) {
-    var queryString = loc.search || loc.split("?")[0] || '';
-    var queryParams = decodeQueryString(queryString);
+  RegExpPattern.prototype.match = function (location) {
+
+    if (!this.matches(location)) return null;
+
+    var loc = splitLocation(location);
+
+    var queryParams = decodeQueryString(loc.queryString);
     return {
-      params: this.regex.exec(loc).slice(1),
+      params: this.regex.exec(location).slice(1),
       namedParams: {},
       queryParams: queryParams
     };
   };
 
-  return RegexPattern;
+  return RegExpPattern;
 }());
 
 // # RoutePattern
@@ -304,6 +313,8 @@ var RoutePattern = (function () {
 
   // Extracts all matched parameters
   RoutePattern.prototype.match = function (location) {
+
+    if (!this.matches(location)) return null;
 
     // Whatever comes after ? and # is ignored
     var loc = splitLocation(location),
@@ -369,4 +380,4 @@ module.exports = RoutePattern;
 // Also export the individual pattern classes
 RoutePattern.QueryStringPattern = QueryStringPattern;
 RoutePattern.PathPattern = PathPattern;
-RoutePattern.RegexPattern = RegexPattern;
+RoutePattern.RegExpPattern = RegExpPattern;

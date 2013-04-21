@@ -17,9 +17,10 @@
   "author": "Bjørge Næss",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~1.8.2",
-    "browserify": "~2.8.0",
-    "es5-shim": "~2.0.8"
+    "browserify": "~2.13.2",
+    "uglify-js": "~2.2.5",
+    "semver": "~1.1.4",
+    "mocha": "~1.9.0"
   },
   "testling": {
     "files": [
