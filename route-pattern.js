@@ -1,3 +1,5 @@
+var querystring = require("querystring");
+
 // # Utility functions
 //
 // ## Shallow merge two or more objects, e.g.
@@ -8,18 +10,6 @@ function merge() {
       merged[prop] = source[prop];
     }
     return merged;
-  }, {});
-}
-
-// ## Convert a query string to a object, e.g.:
-// decodeQueryString("foo=bar") => { foo: "bar" }
-function decodeQueryString(queryString) {
-  return queryString.split("&").reduce(function (params, pair) {
-    var parts = pair.split("="),
-      key = decodeURIComponent(parts[0]),
-      value = decodeURIComponent(parts[1] || '');
-    params[key] = value;
-    return params;
   }, {});
 }
 
@@ -84,8 +74,7 @@ var QueryStringPattern = (function () {
     var data = {
       params: [],
       namedParams: {},
-      namedQueryParams: {},
-      queryParams: {}
+      namedQueryParams: {}
     };
 
     if (!queryString) {
@@ -98,12 +87,9 @@ var QueryStringPattern = (function () {
       return names;
     }, {});
 
-    queryString.split("&").forEach(function (pair) {
-      var parts = pair.split("="),
-        key = decodeURIComponent(parts[0]),
-        value = decodeURIComponent(parts[1] || '');
-      data.queryParams[key] = value;
-
+    var parsedQueryString = querystring.parse(queryString);
+    Object.keys(parsedQueryString).forEach(function(key) {
+      var value = parsedQueryString[key];
       data.params.push(value);
       if (namedParams[key]) {
         data.namedQueryParams[namedParams[key]] = data.namedParams[namedParams[key]] = value;
@@ -264,11 +250,10 @@ var RegExpPattern = (function () {
 
     var loc = splitLocation(location);
 
-    var queryParams = decodeQueryString(loc.queryString);
     return {
       params: this.regex.exec(location).slice(1),
-      namedParams: {},
-      queryParams: queryParams
+      queryParams: querystring.parse(loc.queryString),
+      namedParams: {}
     };
   };
 
@@ -325,7 +310,7 @@ var RoutePattern = (function () {
       params: [],
       namedParams: {},
       pathParams: {},
-      queryParams: {},
+      queryParams: querystring.parse(loc.queryString),
       namedQueryParams: {},
       hashParams: {}
     };
@@ -343,7 +328,6 @@ var RoutePattern = (function () {
     if (pattern = this.queryStringPattern) {
       match = pattern.match(loc.queryString);
       if (match) addMatch(match);
-      data.queryParams = match ? match.queryParams : {};
       data.namedQueryParams = match ? match.namedQueryParams : {};
     }
     if (pattern = this.hashPattern) {
