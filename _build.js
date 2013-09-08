@@ -1,11 +1,9 @@
 var fs = require("fs");
 var pkg = require("./package.json");
 var browserify = require('browserify');
-var semver = require('semver');
 var UglifyJS = require('uglify-js');
 
-var newVersion = semver.inc(pkg.version, "patch")
-var base = pkg.name + "-standalone-" + newVersion;
+var base = pkg.name + "-standalone";
 
 var standalone = base+".js";
 var minified = base+".min.js";
@@ -17,7 +15,7 @@ browserify("./"+pkg.main)
     var result = UglifyJS.minify(standalone);
     fs.writeFileSync(minified, result.code);
 
-    console.log('Built version %s to %s', newVersion, standalone);
+    console.log('Built version %s to %s', pkg.version, standalone);
 
     [standalone, minified].map(function(file) {
       var stat = fs.statSync(file);
