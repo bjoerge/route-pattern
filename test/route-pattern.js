@@ -132,6 +132,10 @@ describe("RoutePattern", function () {
         var pattern = RoutePattern.fromString("/:dir/*file.:ext");
         assert.deepEqual({dir: "about", file: "ban/ana", ext: "txt"}, pattern.match("/about/ban/ana.txt").namedParams);
       });
+      it("should return undefined for empty named splat parameters", function () {
+        var pattern = RoutePattern.fromString("/:dir/*file");
+        assert.deepEqual({dir: "about", file: undefined}, pattern.match("/about/").namedParams);
+      });
       it("should merge named parameters from all aspects of the path", function () {
         var pattern = RoutePattern.fromString("/*root/:foo/?param=:param#:hash");
         assert.deepEqual(['foo/bar', 'baz', 'hey', 'qux'], pattern.match("/foo/bar/baz/?param=hey#qux").params);
