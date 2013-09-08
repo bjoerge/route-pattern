@@ -189,7 +189,10 @@ var PathPattern = (function () {
 
     // Using a regexp to capture named parameters on the pathname (the order of the parameters is significant)
     (this.regexp.exec(pathname) || []).slice(1).forEach(function (value, idx) {
-      value = decodeURIComponent(value);
+      if(value !== undefined) {
+        value = decodeURIComponent(value);
+      }
+
       data.namedParams[this.params[idx]] = value;
       data.params.push(value);
     }, this);
