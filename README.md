@@ -127,8 +127,8 @@ This module works in all major browsers, including IE 8-10. However, it makes us
 order to make it work on legacy browsers, you need to include a ECMAScript 5 shim, like the [es5-shim](https://github.com/kriskowal/es5-shim). 
 
 Download latest version:
-* [Source](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-standalone-0.0.3.js)
-* [Minified](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-standalone-0.0.3.min.js)
+* [Source](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-standalone.js)
+* [Minified](https://raw.github.com/bjoerge/route-pattern/master/route-pattern-standalone.min.js)
 
 When included with a &lt;script&gt; tag, it it will expose the `RoutePattern` class as a global variable.
 
